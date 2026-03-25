@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 import { Document, HydratedDocument } from 'mongoose';
-import { AdminRoleEnum } from '../enum/AdminRole.enum';
-import { AdminStatusEnum } from '../enum/AdminStatus.enum';
+import { AdminRoleEnum } from '../enum/adminRole.enum';
+import { AdminStatusEnum } from '../enum/adminStatus.enum';
 
 export type AdminDocument = HydratedDocument<Admin>;
 

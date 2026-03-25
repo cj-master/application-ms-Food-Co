@@ -1,6 +1,6 @@
 // ─── Editar post (solo campos de texto) ───────────────────────────────────────
 import { ArrayMaxSize, IsArray, IsMongoId, IsOptional, IsString, MaxLength, ValidateNested } from 'class-validator';
-import { PostLocationDto } from './PostLocation.dto';
+import { PostLocationDto } from './postLocation.dto';
 import { Type } from 'class-transformer';
 
 export class UpdatePostDto {

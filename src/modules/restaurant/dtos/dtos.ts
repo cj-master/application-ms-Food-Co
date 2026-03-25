@@ -5,7 +5,7 @@ export * from './getRestaurantBySlug.dto';
 export * from './updateRestaurantStatus.dto';
 
 export * from './setMenuStructured.dto';
-export * from './SetMenuLink.dto';
+export * from './setMenuLink.dto';
 
 export * from './updateRestaurant.dto';
 

@@ -1,5 +1,5 @@
 import { ArrayMaxSize, IsArray, IsMongoId, IsOptional, IsString, MaxLength, ValidateNested } from 'class-validator';
-import { PostLocationDto } from './PostLocation.dto';
+import { PostLocationDto } from './postLocation.dto';
 import { Type } from 'class-transformer';
 
 // ─── Confirmar upload y publicar (paso 2) ─────────────────────────────────────
