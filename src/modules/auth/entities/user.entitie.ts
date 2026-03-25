@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HydratedDocument, Types } from 'mongoose';
-import { AuthProviderEnum, UserRoleEnum, UserStatusEnum } from '../enum/enum';
+import { AuthProviderEnum,  UserRoleEnum,  UserStatusEnum } from '../enum/enum';
 
 // ─── Sub-document: OAuthProvider ─────────────────────────────────────────────
 

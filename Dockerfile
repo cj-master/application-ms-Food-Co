@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY . .
 RUN npm install
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "dev" ]
 
 # Stage 3: Build
 # FROM node:20.16.0-alpine3.19 as builder
