@@ -4,7 +4,6 @@ import { ClientProxy } from '@nestjs/microservices';
 import { RpcException } from '@nestjs/microservices';
 import { Model, Types } from 'mongoose';
 import { firstValueFrom } from 'rxjs';
-import { Expo } from 'expo-server-sdk';
 
 import {
   CreateNotificationDto,
@@ -40,7 +39,7 @@ const NOTIFICATION_COPY: Record<NotificationTypeEnum, (actor: string) => string>
 
 @Injectable()
 export class NotificationService {
-  private readonly expo: Expo;
+  // private readonly expo: Expo;
 
   constructor(
     @InjectModel(Notification.name)
@@ -52,15 +51,15 @@ export class NotificationService {
     // Clientes NATS para consultar otros servicios
     @Inject(NATS_SERVICE) private readonly client: ClientProxy
   ) {
-    this.expo = new Expo();
+    // this.expo = new Expo();
   }
 
   // ── Push Tokens ────────────────────────────────────────────────────────────
 
   async registerPushToken(dto: RegisterPushTokenDto): Promise<void> {
-    if (!Expo.isExpoPushToken(dto.token)) {
-      throw new RpcException({ message: 'Token de push inválido', status: 400 });
-    }
+    // if (!Expo.isExpoPushToken(dto.token)) {
+    //   throw new RpcException({ message: 'Token de push inválido', status: 400 });
+    // }
 
     await this.pushTokenModel.findOneAndUpdate(
       { token: dto.token },
@@ -232,37 +231,37 @@ export class NotificationService {
     const actor = actorMap.get(notification.actorId.toString());
     const body = NOTIFICATION_COPY[notification.type](actor?.displayName ?? 'Alguien');
 
-    const messages: IPushMessage[] = tokens
-      .filter((t) => Expo.isExpoPushToken(t.token))
-      .map((t) => ({
-        to: t.token,
-        sound: 'default' as const,
-        body,
-        data: {
-          type: notification.type,
-          postId: notification.postId?.toString() ?? null,
-          commentId: notification.commentId?.toString() ?? null,
-        },
-      }));
+    // const messages: IPushMessage[] = tokens
+    //   .filter((t) => Expo.isExpoPushToken(t.token))
+    //   .map((t) => ({
+    //     to: t.token,
+    //     sound: 'default' as const,
+    //     body,
+    //     data: {
+    //       type: notification.type,
+    //       postId: notification.postId?.toString() ?? null,
+    //       commentId: notification.commentId?.toString() ?? null,
+    //     },
+    //   }));
 
-    if (!messages.length) return;
+    // if (!messages.length) return;
 
-    const chunks = this.expo.chunkPushNotifications(messages);
+    // const chunks = this.expo.chunkPushNotifications(messages);
 
-    for (const chunk of chunks) {
-      try {
-        const receipts = await this.expo.sendPushNotificationsAsync(chunk);
+    // for (const chunk of chunks) {
+    //   try {
+    //     const receipts = await this.expo.sendPushNotificationsAsync(chunk);
 
-        for (let i = 0; i < receipts.length; i++) {
-          const receipt = receipts[i];
-          if (receipt.status === 'error' && receipt.details?.error === 'DeviceNotRegistered') {
-            await this.pushTokenModel.findOneAndUpdate(
-              { token: messages[i].to },
-              { $set: { active: false } },
-            );
-          }
-        }
-      } catch { /* continuar con el siguiente chunk */ }
-    }
+    //     for (let i = 0; i < receipts.length; i++) {
+    //       const receipt = receipts[i];
+    //       if (receipt.status === 'error' && receipt.details?.error === 'DeviceNotRegistered') {
+    //         await this.pushTokenModel.findOneAndUpdate(
+    //           { token: messages[i].to },
+    //           { $set: { active: false } },
+    //         );
+    //       }
+    //     }
+    //   } catch { /* continuar con el siguiente chunk */ }
+    // }
   }
 }
