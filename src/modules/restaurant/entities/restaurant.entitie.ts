@@ -40,6 +40,12 @@ export class Address {
 
   @Prop({ trim: true, type: String })
   city: string;
+  
+  @Prop({ trim: true, type: String })
+  neighborhood: string
+
+  @Prop({ trim: true, type: String })
+  interiorNumber: string
 
   @Prop({ type: Number })
   zipCode: number;

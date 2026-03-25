@@ -21,7 +21,7 @@ import {
   pipePaginationPage
 } from 'src/common';
 import { Restaurant, RestaurantDocument } from '../entities/entities';
-import { MenuTypeEnum } from '../enum/enum';
+import { MenuTypeEnum, RestaurantStatusEnum } from '../enum/enum';
 
 @Injectable()
 export class RestaurantsAdminService {
@@ -167,6 +167,39 @@ export class RestaurantsAdminService {
     return restaurant;
   }
 
+  // ── Stadisct ──────────────────────────────────────────────────────────────────
+  public async statistics() {
+    const now = new Date();
+    const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const [total, active, inactive, totalLastMonth, activeLastMonth, inactiveLastMonth] = await Promise.all([
+      this.restaurantModel.countDocuments(),
+      this.restaurantModel.countDocuments({ status: RestaurantStatusEnum.ACTIVE }),
+      this.restaurantModel.countDocuments({ status: RestaurantStatusEnum.INACTIVE }),
+
+      // Conteo del mes anterior
+      this.restaurantModel.countDocuments({ createdAt: { $lt: startOfThisMonth, $gte: startOfLastMonth } }),
+      this.restaurantModel.countDocuments({ status: RestaurantStatusEnum.ACTIVE, createdAt: { $lt: startOfThisMonth, $gte: startOfLastMonth } }),
+      this.restaurantModel.countDocuments({ status: RestaurantStatusEnum.INACTIVE, createdAt: { $lt: startOfThisMonth, $gte: startOfLastMonth } }),
+    ]);
+
+    const calcGrowth = (current: number, previous: number): number => {
+      if (previous === 0) return current > 0 ? 100 : 0;
+      return parseFloat((((current - previous) / previous) * 100).toFixed(2));
+    };
+
+    return {
+      total,
+      active,
+      inactive,
+      growth: {
+        total: calcGrowth(total, totalLastMonth),
+        active: calcGrowth(active, activeLastMonth),
+        inactive: calcGrowth(inactive, inactiveLastMonth),
+      }
+    };
+  }
   // ── Media ──────────────────────────────────────────────────────────────────
   async onLogoProcessed(payload: { key: string; entityId: string }): Promise<void> {
     await this.restaurantModel.findByIdAndUpdate(payload.entityId, { $set: { logoKey: payload.key } });

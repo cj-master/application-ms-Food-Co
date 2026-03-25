@@ -7,7 +7,6 @@ import { UploadModule } from './modules/upload/upload.module';
 import { RestaurantModule } from './modules/restaurant/restaurant.module';
 import { FeedModule } from './modules/feed/feed.module';
 import { RedisModule } from '@nestjs-modules/ioredis';
-import { NatsModule } from './common/transports/nats.module';
 import { SearchModule } from './modules/search/search.module';
 import { NotificationModule } from './modules/notification/notification.module';
 import { MediaModule } from './modules/media/media.module';

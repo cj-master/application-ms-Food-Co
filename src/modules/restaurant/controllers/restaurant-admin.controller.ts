@@ -56,6 +56,12 @@ export class RestaurantsAdminController {
     return this.service.setMenuStructured(dto);
   }
 
+  // Estadisticas
+  @MessagePattern('restaurants.admin.menu.statistics')
+  statistics() {
+    return this.service.statistics();
+  }
+
   // ── Media — escucha cuando el Media Service termina de procesar ────────────
   @EventPattern(MEDIA_EVENTS.PROCESSED('restaurant_logo'))
   onLogoProcessed(@Payload() payload: { key: string; entityId: string }) {
