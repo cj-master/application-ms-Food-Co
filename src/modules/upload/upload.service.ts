@@ -16,7 +16,7 @@ import { IPresignedUrlResult } from './interfaces/interfaces';
 import { MEDIA_EVENTS } from '../media/const/const';
 import { ClientProxy } from '@nestjs/microservices';
 import { envs, NATS_SERVICE } from 'src/config';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto'
 
 const PRESIGNED_URL_EXPIRY = 900; // 15 minutos
 
@@ -50,7 +50,7 @@ export class UploadService {
     }
 
     const config = UPLOAD_CONFIG[dto.resource];
-    const uploadId = uuidv4();
+    const uploadId = randomUUID();
     const ext = ALLOWED_IMAGE_TYPES[dto.mimeType as AllowedMimeType];
     const key = this.buildKey(dto, uploadId, ext);
 

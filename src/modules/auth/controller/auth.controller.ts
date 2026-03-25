@@ -1,4 +1,4 @@
-import { MessagePattern, Payload, EventPattern } from '@nestjs/microservices';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AuthService } from '../services/auth.service';
 import { Controller } from '@nestjs/common';
 

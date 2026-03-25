@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Model, Types } from 'mongoose';
 import { UAParser } from 'ua-parser-js';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto'
 import * as bcrypt from 'bcrypt';
 import { envs } from 'src/config';
 
@@ -285,7 +285,7 @@ export class AuthService {
 
   // ─── Helpers privados ──────────────────────────────────────────────────────
   private async createSession(user: UserDocument, meta: { ipAddress: string; userAgent: string }): Promise<TokenPair> {
-    const jti = uuidv4();
+    const jti = randomUUID();
 
     const jwtPayload: JwtPayload = {
       sub: user._id.toString(),
@@ -300,7 +300,7 @@ export class AuthService {
     });
 
     // Generar refresh token como UUID y guardarlo hasheado
-    const rawRefreshToken = uuidv4();
+    const rawRefreshToken = randomUUID();
     const hashedRefreshToken = await bcrypt.hash(rawRefreshToken, this.SALT_ROUNDS);
 
     // Parsear el userAgent para información del dispositivo

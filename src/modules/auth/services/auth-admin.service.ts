@@ -9,7 +9,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtPayload } from 'jsonwebtoken';
 import { JwtService } from '@nestjs/jwt';
 import * as UAParser from 'ua-parser-js';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto'
 import { envs } from 'src/config';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -237,7 +237,7 @@ export class AuthAdminService {
   // ─── HELPERS PRIVADOS ────────────────────────────────────────────────────────
 
   private async createSession(admin: AdminDocument, deviceInfo: DeviceInfoDto): Promise<TokenPair> {
-    const jti = uuidv4();
+    const jti = randomUUID();
 
     // Generar tokens
     const payload: JwtPayload = {
